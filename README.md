@@ -24,7 +24,7 @@ See a rendered example in [`docs/example-report/`](docs/example-report/).
 
 ## Why I built it
 
-On an OT site you rarely get to run a scanner against live switches — but you can almost always get a config export. After 25+ years I have reviewed those by eye more times than I can count, and the same dozen things are always wrong: Telnet still on, SNMP `public`, no syslog, `enable password` instead of `enable secret`. This tool encodes that checklist so the boring 80% is automatic and I can spend the review on the interesting 20%. Keeping the rules in YAML matters: the customer can see exactly what "hardened" means to me, and argue with it.
+On an OT site you rarely get to run a scanner against live switches — but you can almost always get a config export. After 5+ years I have reviewed those by eye more times than I can count, and the same dozen things are always wrong: Telnet still on, SNMP `public`, no syslog, `enable password` instead of `enable secret`. This tool encodes that checklist so the boring 80% is automatic and I can spend the review on the interesting 20%. Keeping the rules in YAML matters: the customer can see exactly what "hardened" means to me, and argue with it.
 
 ## Install
 
