@@ -1,0 +1,53 @@
+name: Hirschmann HiOS industrial-switch baseline (DRAFT)
+description: >
+  A DRAFT hardening baseline for Hirschmann HiOS industrial switches. HiOS CLI syntax varies by
+  firmware version, so the patterns below are EXAMPLES that illustrate the intent of each control,
+  NOT verified command strings. Confirm every pattern against your firmware's CLI reference before
+  relying on a pass. The intent (disable clear-text management, require SNMPv3, lock down unused
+  ports) matches the IEC 62443-4-2 component requirements commonly applied to field switches.
+dialect: hirschmann-hios
+verified: false
+
+rules:
+  - id: MGMT-001
+    title: Telnet management is disabled (intent)
+    severity: high
+    check: absent
+    pattern: '(?i)^telnet server (enable|on)|transport input telnet'
+    remediation: "Disable the Telnet server; manage over SSH/HTTPS only. (Verify HiOS syntax.)"
+    reference: IEC 62443-4-2 CR 1.5 / CR 4.3
+
+  - id: MGMT-002
+    title: Insecure HTTP management is disabled (intent)
+    severity: medium
+    check: absent
+    pattern: '(?i)^http server (enable|on)\b'
+    remediation: "Use HTTPS for the web UI; disable plain HTTP. (Verify HiOS syntax.)"
+    reference: IEC 62443-4-2 CR 4.3
+
+  - id: SNMP-001
+    title: SNMPv3 is in use, not v1/v2c (intent)
+    severity: high
+    check: absent_all
+    patterns:
+      - '(?i)^snmp .*v1'
+      - '(?i)^snmp .*v2c'
+      - '(?i)community (public|private)'
+    remediation: "Disable SNMP v1/v2c and default communities; use SNMPv3 auth+priv. (Verify HiOS syntax.)"
+    reference: IEC 62443-4-2 CR 1.5
+
+  - id: TIME-001
+    title: Time synchronisation (SNTP/PTP) is configured (intent)
+    severity: low
+    check: present
+    pattern: '(?i)^(sntp|ptp) .*(enable|client|server)'
+    remediation: "Configure SNTP or PTP so logs and events share a time base. (Verify HiOS syntax.)"
+    reference: IEC 62443-4-2 CR 2.11
+
+  - id: PORT-001
+    title: Access ports enforce MAC-based port security (intent)
+    severity: medium
+    check: present
+    pattern: '(?i)(port-security|mac-based port access|802\.1x)'
+    remediation: "Enable port-security / 802.1X on edge ports to control which devices connect. (Verify HiOS syntax.)"
+    reference: IEC 62443-4-2 CR 1.2

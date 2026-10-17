@@ -1,0 +1,192 @@
+{
+  "pack": "Cisco IOS hardening baseline",
+  "dialect": "cisco-ios",
+  "verified": true,
+  "score": 0,
+  "summary": {
+    "rules": 15,
+    "checks": 17,
+    "passed": 0,
+    "failed": 17,
+    "errors": 0,
+    "by_severity": {
+      "critical": 1,
+      "high": 6,
+      "medium": 5,
+      "low": 3,
+      "info": 2
+    }
+  },
+  "findings": [
+    {
+      "rule_id": "PWD-001",
+      "title": "Enable secret (not enable password) is used",
+      "severity": "critical",
+      "status": "fail",
+      "detail": "required configuration not found: /^enable secret/",
+      "remediation": "Use 'enable secret' (PBKDF/scrypt) instead of 'enable password'.",
+      "reference": "CIS Cisco IOS 1.1.2",
+      "scope": ""
+    },
+    {
+      "rule_id": "AAA-001",
+      "title": "AAA new-model is enabled",
+      "severity": "high",
+      "status": "fail",
+      "detail": "required configuration not found: /^aaa new-model/",
+      "remediation": "Configure 'aaa new-model' and model authentication/authorization with AAA.",
+      "reference": "CIS Cisco IOS 1.1.1",
+      "scope": ""
+    },
+    {
+      "rule_id": "PWD-002",
+      "title": "Legacy 'enable password' is not present",
+      "severity": "high",
+      "status": "fail",
+      "detail": "disallowed configuration present: /^enable password/",
+      "remediation": "Remove 'enable password'; it uses weak/clear storage.",
+      "reference": "CIS Cisco IOS 1.1.2",
+      "scope": ""
+    },
+    {
+      "rule_id": "SNMP-001",
+      "title": "No SNMP community 'public' or 'private'",
+      "severity": "high",
+      "status": "fail",
+      "detail": "present: /^snmp-server community\\s+public/, /^snmp-server community\\s+private/",
+      "remediation": "Remove default SNMP communities; prefer SNMPv3 with auth+priv.",
+      "reference": "CIS Cisco IOS 2.2",
+      "scope": ""
+    },
+    {
+      "rule_id": "SNMP-002",
+      "title": "SNMP communities are not read-write",
+      "severity": "high",
+      "status": "fail",
+      "detail": "disallowed configuration present: /^snmp-server community\\s+\\S+\\s+RW/",
+      "remediation": "Avoid RW communities; use read-only or SNMPv3.",
+      "reference": "CIS Cisco IOS 2.2",
+      "scope": ""
+    },
+    {
+      "rule_id": "SVC-003",
+      "title": "Secure management plane (SSH present, Telnet VTY transport removed)",
+      "severity": "high",
+      "status": "fail",
+      "detail": "required configuration not found: /^ip ssh version 2/",
+      "remediation": "Set 'ip ssh version 2' and generate a >=2048-bit RSA key.",
+      "reference": "CIS Cisco IOS 1.5",
+      "scope": ""
+    },
+    {
+      "rule_id": "VTY-001",
+      "title": "VTY lines use SSH transport only (no Telnet)",
+      "severity": "high",
+      "status": "fail",
+      "detail": "disallowed configuration present: /^\\s*transport input (telnet|all)\\b/",
+      "remediation": "Set 'transport input ssh' on all VTY lines.",
+      "reference": "CIS Cisco IOS 1.5.3",
+      "scope": ""
+    },
+    {
+      "rule_id": "IF-001",
+      "title": "Access ports have port-security or BPDU guard",
+      "severity": "medium",
+      "status": "fail",
+      "detail": "missing /switchport port-security|spanning-tree bpduguard enable|spanning-tree portfast/",
+      "remediation": "On edge access ports, enable PortFast + BPDU guard and/or port-security.",
+      "reference": "CIS Cisco IOS 4.x",
+      "scope": "interface GigabitEthernet0/1"
+    },
+    {
+      "rule_id": "IF-001",
+      "title": "Access ports have port-security or BPDU guard",
+      "severity": "medium",
+      "status": "fail",
+      "detail": "missing /switchport port-security|spanning-tree bpduguard enable|spanning-tree portfast/",
+      "remediation": "On edge access ports, enable PortFast + BPDU guard and/or port-security.",
+      "reference": "CIS Cisco IOS 4.x",
+      "scope": "interface GigabitEthernet0/2"
+    },
+    {
+      "rule_id": "LOG-001",
+      "title": "Logging to a syslog server is configured",
+      "severity": "medium",
+      "status": "fail",
+      "detail": "required configuration not found: /^logging host|^logging \\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}/",
+      "remediation": "Send logs to a central syslog/SIEM with 'logging host <ip>'.",
+      "reference": "CIS Cisco IOS 3.2",
+      "scope": ""
+    },
+    {
+      "rule_id": "SVC-001",
+      "title": "Password encryption service is enabled",
+      "severity": "medium",
+      "status": "fail",
+      "detail": "required configuration not found: /^service password-encryption/",
+      "remediation": "Add 'service password-encryption'.",
+      "reference": "CIS Cisco IOS 1.1.4",
+      "scope": ""
+    },
+    {
+      "rule_id": "SVC-002",
+      "title": "Insecure small/legacy services are disabled",
+      "severity": "medium",
+      "status": "fail",
+      "detail": "present: /^ip http server\\b/, /^service tcp-small-servers/",
+      "remediation": "Disable the HTTP server (use HTTPS), and remove small-servers/finger services.",
+      "reference": "CIS Cisco IOS 2.1",
+      "scope": ""
+    },
+    {
+      "rule_id": "BANNER-001",
+      "title": "A login/MOTD banner is present",
+      "severity": "low",
+      "status": "fail",
+      "detail": "required configuration not found: /^banner (login|motd)/",
+      "remediation": "Add an authorized-use banner with 'banner login'.",
+      "reference": "CIS Cisco IOS 1.7",
+      "scope": ""
+    },
+    {
+      "rule_id": "NTP-001",
+      "title": "NTP authentication is enabled",
+      "severity": "low",
+      "status": "fail",
+      "detail": "missing: /^ntp authenticate/, /^ntp authentication-key/",
+      "remediation": "Enable 'ntp authenticate' and configure authentication keys.",
+      "reference": "CIS Cisco IOS 3.1",
+      "scope": ""
+    },
+    {
+      "rule_id": "VTY-002",
+      "title": "VTY lines have an exec-timeout",
+      "severity": "low",
+      "status": "fail",
+      "detail": "required configuration not found: /^\\s*exec-timeout\\s+\\d/",
+      "remediation": "Set 'exec-timeout 10 0' (or site standard) on console and VTY lines.",
+      "reference": "CIS Cisco IOS 1.6",
+      "scope": ""
+    },
+    {
+      "rule_id": "IF-002",
+      "title": "Unused-looking interfaces are shut down",
+      "severity": "info",
+      "status": "fail",
+      "detail": "has /no shutdown/",
+      "remediation": "Administratively shut interfaces that are not in use ('shutdown').",
+      "reference": "CIS Cisco IOS 1.2",
+      "scope": "interface GigabitEthernet0/1"
+    },
+    {
+      "rule_id": "IF-002",
+      "title": "Unused-looking interfaces are shut down",
+      "severity": "info",
+      "status": "fail",
+      "detail": "has /no shutdown/",
+      "remediation": "Administratively shut interfaces that are not in use ('shutdown').",
+      "reference": "CIS Cisco IOS 1.2",
+      "scope": "interface GigabitEthernet0/2"
+    }
+  ]
+}
